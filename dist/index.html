@@ -8,26 +8,68 @@
         <title>Todo List</title>
     </head>
     <body>
-        <div class="header">
-            <img src="./images/check.svg" />
-            <p>Todo List</p>
-        </div>
-        <div class="menu">
-            <ul class="todos"></ul>
-            <li>Today</li>
-            <h1>Projects</h1>
-            <div class="projectsDiv">
-                <button class="add-proj">
-                    <img src="./images/plus.svg" />Add Project
-                </button>
+        <div class="container">
+            <div class="header">
+                <img src="./images/check.svg" />
+                <p>Todo List</p>
+            </div>
+            <div class="menu">
+                <div class="todos">
+                    <p>Today</p>
+                    <p>This week</p>
+                </div>
+                <div class="projects-container">
+                    <h1>Projects</h1>
+                </div>
+                <div class="projectsDivBtn">
+                    <button class="add-proj">
+                        <img src="./images/plus.svg" />Add Project
+                    </button>
+                </div>
+            </div>
+            <div class="taskContainer">
+                <div class="addTaskBtnDiv">
+                    <button class="addTaskBtn">
+                        <img src="./images/plus.svg" />Add Task
+                    </button>
+                </div>
+                <div class="tasksGrid"></div>
+            </div>
+            <div class="footer">
+                <p>Made by vladius9512</p>
+                <a href="https://github.com/vladius9512" target="_blank">
+                    <img src="./images/github.svg" />
+                </a>
             </div>
         </div>
-        <div class="container"></div>
-        <div class="footer">
-            <p>Made by vladius9512</p>
-            <a href="https://github.com/vladius9512" target="_blank">
-                <img src="./images/github.svg" />
-            </a>
+        <div class="overlay" id="overlay">
+            <div class="modal" id="addTaskForm">
+                <form action="submit" id="form">
+                    <label for="title">Task name:</label>
+                    <input
+                        type="text"
+                        name="title"
+                        id="title"
+                        placeholder="Title"
+                        required=""
+                        maxlength="100"
+                    />
+                    <label for="description">Task description:</label>
+                    <input
+                        type="text"
+                        name="description"
+                        id="description"
+                        placeholder="Describe your task..."
+                        maxlength="250"
+                    />
+                    <label for="date">Finish me until:</label>
+                    <input type="date" name="date" id="date" />
+                    <label for="priority">Priority:</label>
+                    <button type="button" id="low">Low</button>
+                    <button type="button" id="medium">Medium</button>
+                    <button type="button" id="high">High</button>
+                </form>
+            </div>
         </div>
     </body>
     <script src="main.js"></script>

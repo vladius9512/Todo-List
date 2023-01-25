@@ -8,10 +8,15 @@ body {
     background-color: #4e596f;
 }
 
+.container {
+    display: grid;
+    grid-template-columns: 250px auto;
+    grid-template-rows: 100px 1fr;
+    height: 94vh;
+}
+
 .header {
     display: flex;
-    width: 100%;
-    height: 100px;
     background-color: #202124;
     color: #ffffff;
     font-size: 50px;
@@ -19,6 +24,7 @@ body {
     align-items: center;
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.9), 0 0px 2px rgba(0, 0, 0, 0.9);
     position: relative;
+    grid-column: 1/3;
 }
 
 .header img {
@@ -30,18 +36,23 @@ body {
 
 .menu {
     width: 250px;
-    height: 100vh;
     background-color: #f54864;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    display: grid;
+    grid-template-rows: 1fr 5fr 1fr;
     padding: 10px;
     box-sizing: border-box;
+}
+
+.todos {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
 }
 
 .menu h1 {
     color: #ffffff;
     font-weight: 200;
+    justify-self: center;
 }
 
 .add-proj img {
@@ -51,8 +62,9 @@ body {
     transition: all 0.25s ease-in-out;
 }
 
-.projectsDiv {
+.projectsDivBtn {
     width: 100%;
+    grid-row: 4;
 }
 
 .add-proj {
@@ -76,6 +88,76 @@ body {
 
 .add-proj:hover img {
     transform: rotate(90deg);
+}
+
+.taskContainer {
+    display: flex;
+    flex-direction: column;
+}
+
+.addTaskBtnDiv {
+    width: 200px;
+    align-self: center;
+    font-weight: 400;
+}
+
+.addTaskBtn {
+    background-color: #f54864;
+    border: none;
+    border-radius: 3px;
+    width: 100%;
+    padding: 15px;
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 20px;
+}
+
+.addTaskBtn img {
+    height: 15px;
+    width: 15px;
+    margin-right: 15px;
+    transition: all 0.25s ease-in-out;
+}
+
+.addTaskBtn:hover {
+    transform: scale(1.05);
+}
+
+.addTaskBtn:hover img {
+    transform: rotate(1440deg);
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: none;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.overlay.active {
+    display: block;
+}
+
+.modal {
+    position: fixed;
+    z-index: 1;
+    top: 50%;
+    left: 50%;
+    width: 350px;
+    border-radius: 8px;
+    background-color: #fffbfb;
+    transform: translate(-50%, -50%) scale(0);
+}
+
+.modal.active {
+    transform: translate(-50%, -50%) scale(1);
+    transition: all 0.2s ease-in-out;
 }
 
 .footer {
