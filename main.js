@@ -1,0 +1,1 @@
+(()=>{const e=document.getElementById("addTaskBtn"),t=document.getElementById("overlay"),a=document.getElementById("addTaskForm");e.addEventListener("click",(e=>{e.target,t.classList.add("active"),a.classList.add("active")})),t.addEventListener("click",(e=>{e.target===t&&(a.classList.remove("active"),t.classList.remove("active"))}))})();
