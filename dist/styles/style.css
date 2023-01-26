@@ -149,15 +149,113 @@ body {
     z-index: 1;
     top: 50%;
     left: 50%;
-    width: 350px;
+    min-width: 350px;
+    width: 50%;
+    height: 50%;
     border-radius: 8px;
-    background-color: #fffbfb;
     transform: translate(-50%, -50%) scale(0);
+    background-color: #4e596f;
+    color: #ffffff;
 }
 
 .modal.active {
     transform: translate(-50%, -50%) scale(1);
     transition: all 0.2s ease-in-out;
+}
+
+#form {
+    display: flex;
+    position: relative;
+    height: 100%;
+    gap: 10px;
+    justify-content: center;
+}
+
+.input-container {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.label-container {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+#low {
+    background-color: #6f975c;
+    border-style: none;
+    border-radius: 3px;
+    width: 75px;
+    height: 25px;
+    font-size: 14px;
+    transition: all 0.25s ease-in-out;
+    cursor: pointer;
+}
+
+#low:hover {
+    transform: scale(1.05);
+}
+
+#medium {
+    background-color: #d2d462;
+    border-style: none;
+    border-radius: 3px;
+    width: 75px;
+    height: 25px;
+    font-size: 14px;
+    transition: all 0.25s ease-in-out;
+    cursor: pointer;
+}
+
+#medium:hover {
+    transform: scale(1.05);
+}
+
+#high {
+    background-color: #f54864;
+    border-style: none;
+    border-radius: 3px;
+    width: 75px;
+    height: 25px;
+    font-size: 14px;
+    transition: all 0.25s ease-in-out;
+    cursor: pointer;
+}
+
+#high:hover {
+    transform: scale(1.05);
+}
+
+.submit-container {
+    position: absolute;
+    bottom: 2%;
+    left: 50%;
+    margin-left: -100px;
+}
+
+.submit-container button {
+    width: 200px;
+    height: 30px;
+    border-style: none;
+    border-radius: 5px;
+    background-color: #f54864;
+    color: #ffffff;
+    font-size: 16px;
+    transition: all 0.25s ease-in-out;
+    cursor: pointer;
+}
+
+.submit-container button:hover {
+    width: 200px;
+    height: 30px;
+    border-style: none;
+    border-radius: 5px;
+    background-color: #f54864;
+    color: #ffffff;
+    font-size: 16px;
+    transform: scale(1.05);
 }
 
 .footer {
