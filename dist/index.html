@@ -33,7 +33,36 @@
                         <img src="./images/plus.svg" />Add Task
                     </button>
                 </div>
-                <div class="tasksGrid"></div>
+                <div class="tasksGrid" id="tasksGrid">
+                    <div class="task">
+                        <div class="task_checkbox">
+                            <input type="checkbox" name="test1" />
+                        </div>
+                        <div class="task_title">
+                            <label for="test1"> test1 </label>
+                        </div>
+                        <div class="description">
+                            <button id="descBtn">Description</button>
+                        </div>
+                        <div class="task_date">2023-02-02</div>
+                        <img class="edit" src="./images/pencil.svg" />
+                        <img class="delete" src="./images/bin.svg" />
+                    </div>
+                    <div class="task">
+                        <div class="task_checkbox">
+                            <input type="checkbox" name="test1" />
+                        </div>
+                        <div class="task_title">
+                            <label for="test1"> test1 </label>
+                        </div>
+                        <div class="description">
+                            <button id="descBtn">Description</button>
+                        </div>
+                        <div class="task_date">2024-04-01</div>
+                        <img class="edit" src="./images/pencil.svg" />
+                        <img class="delete" src="./images/bin.svg" />
+                    </div>
+                </div>
             </div>
             <div class="footer">
                 <p>Made by vladius9512</p>
@@ -46,28 +75,43 @@
             <div class="modal" id="addTaskForm">
                 <form action="submit" id="form">
                     <div class="label-container">
-                        <label for="title">Task name:</label>
-                        <label for="description">Task description:</label>
-                        <label for="date">Finish me until:</label>
-                        <label for="priority">Priority:</label>
+                        <label for="title" class="hgt">Task name:</label>
+                        <label for="description" class="hgt"
+                            >Task description:</label
+                        >
+                        <label for="date" class="hgt">Finish me until:</label>
+                        <label for="priority" class="hgt">Priority:</label>
                     </div>
                     <div class="input-container">
-                        <input
-                            type="text"
-                            name="title"
-                            id="title"
-                            placeholder="Title"
-                            required=""
-                            maxlength="100"
-                        />
-                        <input
-                            type="text"
-                            name="description"
-                            id="description"
-                            placeholder="Describe your task..."
-                            maxlength="250"
-                        />
-                        <input type="date" name="date" id="date" />
+                        <div class="hgt">
+                            <input
+                                type="text"
+                                name="title"
+                                id="title"
+                                placeholder="Title"
+                                required=""
+                                maxlength="100"
+                                class="wdt"
+                            />
+                        </div>
+                        <div class="hgt">
+                            <input
+                                type="text"
+                                name="description"
+                                id="description"
+                                placeholder="Describe your task..."
+                                maxlength="250"
+                                class="wdt"
+                            />
+                        </div>
+                        <div class="hgt">
+                            <input
+                                type="date"
+                                name="date"
+                                id="date"
+                                class="wdt"
+                            />
+                        </div>
                         <div class="priorityBtn-container">
                             <button type="button" id="low">Low</button>
                             <button type="button" id="medium">Medium</button>
