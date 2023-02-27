@@ -16,7 +16,15 @@ function addTaskToProject(projectName, taskTitle) {
     projectName[taskTitle.title] = taskTitle;
 }
 
+const addProjBtn = document.getElementById("addProjBtn");
+const projectModal = document.getElementById("projectModal");
+const submitProjBtn = document.getElementById("submitProject");
+const projForm = document.getElementById("projForm");
+const projTitle = document.getElementById("projName");
+const projContainer = document.getElementById("projContainer");
+
 const addTaskBtn = document.getElementById("addTaskBtn");
+
 const overlay = document.getElementById("overlay");
 const addTaskForm = document.getElementById("addTaskForm");
 const submitTaskBtn = document.getElementById("submitTask");
@@ -29,9 +37,10 @@ const tasksGrid = document.getElementById("tasksGrid");
 function resetOverlay() {
     addTaskForm.classList.remove("active");
     overlay.classList.remove("active");
+    projectModal.classList.remove("active");
 }
 
-addTaskBtn.addEventListener("click", (e) => {
+addTaskBtn.addEventListener("click", () => {
     overlay.classList.add("active");
     addTaskForm.classList.add("active");
 });
@@ -81,6 +90,12 @@ function createTaskDiv(title, date) {
     descriptionDiv.appendChild(descriptionBtn);
 }
 
+function createProject(title) {
+    let p = document.createElement("p");
+    p.innerText = title;
+    projContainer.append(p);
+}
+
 submitTaskBtn.addEventListener("click", (e) => {
     e.preventDefault();
     if (taskTitle.value === "") {
@@ -97,5 +112,23 @@ submitTaskBtn.addEventListener("click", (e) => {
     createTaskDiv(taskTitle.value, taskDate.value);
     console.log(today);
     form.reset();
+    resetOverlay();
+});
+
+addProjBtn.addEventListener("click", () => {
+    overlay.classList.add("active");
+    projectModal.classList.add("active");
+});
+
+submitProjBtn.addEventListener("click", (e) => {
+    e.preventDefault();
+    if (projTitle.value === "") {
+        projTitle.setCustomValidity("Please fill out the project name field");
+        return;
+    }
+    const newProj = new Project(projTitle.value);
+    console.log(newProj);
+    createProject(projTitle.value);
+    projForm.reset();
     resetOverlay();
 });

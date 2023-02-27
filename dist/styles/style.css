@@ -55,6 +55,12 @@ body {
     justify-self: center;
 }
 
+.projects-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
 .add-proj img {
     height: 15px;
     width: 15px;
@@ -216,6 +222,14 @@ body {
 }
 
 #form {
+    display: flex;
+    position: relative;
+    height: 100%;
+    gap: 10px;
+    justify-content: center;
+}
+
+#projForm {
     display: flex;
     position: relative;
     height: 100%;
