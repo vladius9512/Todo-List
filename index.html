@@ -18,11 +18,11 @@
                     <p>Today</p>
                     <p>This week</p>
                 </div>
-                <div class="projects-container">
+                <div class="projects-container" id="projContainer">
                     <h1>Projects</h1>
                 </div>
                 <div class="projectsDivBtn">
-                    <button class="add-proj">
+                    <button class="add-proj" id="addProjBtn">
                         <img src="./images/plus.svg" />Add Project
                     </button>
                 </div>
@@ -121,6 +121,31 @@
                     <div class="submit-container">
                         <button type="submit" id="submitTask">
                             Submit task
+                        </button>
+                    </div>
+                </form>
+            </div>
+            <div class="modal" id="projectModal">
+                <form action="submit" id="projForm">
+                    <div class="label-container">
+                        <label for="title" class="hgt">Project name:</label>
+                    </div>
+                    <div class="input-container">
+                        <div class="hgt">
+                            <input
+                                type="text"
+                                name="projName"
+                                id="projName"
+                                placeholder="Reading list"
+                                required=""
+                                maxlength="100"
+                                class="wdt"
+                            />
+                        </div>
+                    </div>
+                    <div class="submit-container">
+                        <button type="submit" id="submitProject">
+                            Submit project
                         </button>
                     </div>
                 </form>
