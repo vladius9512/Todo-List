@@ -53,9 +53,10 @@ overlay.addEventListener("click", (e) => {
     }
 });
 
-function createTaskDiv(title, date) {
+function createTaskDiv(title, date, priority) {
     let taskDiv = document.createElement("div");
     taskDiv.classList.add("task");
+    taskDiv.classList.add(priority);
     let taskCheckboxDiv = document.createElement("div");
     taskCheckboxDiv.classList.add("task_checkbox");
     let checkbox = document.createElement("input");
@@ -117,7 +118,7 @@ submitTaskBtn.addEventListener("click", (e) => {
         priorityValue
     );
     addTaskToProject(today, newTask);
-    createTaskDiv(taskTitle.value, taskDate.value);
+    createTaskDiv(taskTitle.value, taskDate.value, priorityValue);
     console.log(today);
     form.reset();
     resetOverlay();
