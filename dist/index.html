@@ -34,7 +34,7 @@
                     </button>
                 </div>
                 <div class="tasksGrid" id="tasksGrid">
-                    <div class="task">
+                    <div class="task low">
                         <div class="task_checkbox">
                             <input type="checkbox" name="test1" />
                         </div>
@@ -113,9 +113,27 @@
                             />
                         </div>
                         <div class="priorityBtn-container">
-                            <button type="button" id="low">Low</button>
-                            <button type="button" id="medium">Medium</button>
-                            <button type="button" id="high">High</button>
+                            <input
+                                type="radio"
+                                name="priority"
+                                value="low"
+                                id="low"
+                            />
+                            <label for="low">Low</label>
+                            <input
+                                type="radio"
+                                name="priority"
+                                value="medium"
+                                id="medium"
+                            />
+                            <label for="medium">Medium</label>
+                            <input
+                                type="radio"
+                                name="priority"
+                                value="high"
+                                id="high"
+                            />
+                            <label for="high">High</label>
                         </div>
                     </div>
                     <div class="submit-container">

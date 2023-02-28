@@ -33,6 +33,7 @@ const taskTitle = document.getElementById("title");
 const taskDescription = document.getElementById("description");
 const taskDate = document.getElementById("date");
 const tasksGrid = document.getElementById("tasksGrid");
+const prioBtn = document.getElementsByName("priority");
 
 function resetOverlay() {
     addTaskForm.classList.remove("active");
@@ -102,11 +103,18 @@ submitTaskBtn.addEventListener("click", (e) => {
         taskTitle.setCustomValidity("Please fill out the task name field");
         return;
     }
+    let priorityValue;
+    for (let i = 0; i < prioBtn.length; i++) {
+        if (prioBtn[i].checked) {
+            priorityValue = prioBtn[i].value;
+        }
+    }
+    console.log(priorityValue);
     let newTask = new Task(
         taskTitle.value,
         taskDescription.value,
         taskDate.value,
-        "red"
+        priorityValue
     );
     addTaskToProject(today, newTask);
     createTaskDiv(taskTitle.value, taskDate.value);
