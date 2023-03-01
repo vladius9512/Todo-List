@@ -156,6 +156,11 @@ body {
     border-left: solid red;
 }
 
+.task.checked {
+    text-decoration: line-through;
+    opacity: 0.5;
+}
+
 .task {
     display: flex;
     align-items: center;
