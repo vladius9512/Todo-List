@@ -53,32 +53,57 @@ overlay.addEventListener("click", (e) => {
     }
 });
 
+function createElemWithClasses(elemType, classesName, src, id) {
+    let output = document.createElement(elemType);
+    if (src) {
+        output.src = src;
+    }
+    if (id) {
+        output.id = id;
+    }
+    console.log(classesName.length);
+    if (classesName) {
+        classesName.forEach((className) => {
+            output.classList.add(className);
+        });
+    }
+    return output;
+}
+
 function createTaskDiv(title, date, priority) {
-    let taskDiv = document.createElement("div");
-    taskDiv.classList.add("task");
-    taskDiv.classList.add(priority);
-    let taskCheckboxDiv = document.createElement("div");
-    taskCheckboxDiv.classList.add("task_checkbox");
-    let checkbox = document.createElement("input");
+    let taskDiv = createElemWithClasses("div", ["task", priority]);
+    let taskCheckboxDiv = createElemWithClasses("div", ["task_checkbox"]);
+    let checkbox = createElemWithClasses("input", [title]);
     checkbox.type = "checkbox";
     checkbox.name = title;
-    let taskNameDiv = document.createElement("div");
-    taskNameDiv.classList.add("task_title");
+
+    checkbox.addEventListener("change", () => {
+        if (checkbox.checked) {
+            taskDiv.classList.add("checked");
+        } else {
+            taskDiv.classList.remove("checked");
+        }
+    });
+
+    let taskNameDiv = createElemWithClasses("div", ["task_title"]);
     taskNameDiv.innerText = title;
-    let descriptionDiv = document.createElement("div");
-    descriptionDiv.classList.add("description");
-    let descriptionBtn = document.createElement("button");
+    let descriptionDiv = createElemWithClasses("div", ["description"]);
+    let descriptionBtn = createElemWithClasses(
+        "button",
+        [undefined],
+        undefined,
+        "descBtn"
+    );
     descriptionBtn.innerText = "Description";
-    descriptionBtn.id = "descBtn";
-    let dateDiv = document.createElement("div");
-    dateDiv.classList.add("task_date");
+    let dateDiv = createElemWithClasses("div", ["task_date"]);
     dateDiv.innerText = date;
-    let edit = document.createElement("img");
-    edit.classList.add("edit");
-    edit.src = "./images/pencil.svg";
-    let remove = document.createElement("img");
-    remove.classList.add("delete");
-    remove.src = "./images/bin.svg";
+    let edit = createElemWithClasses("img", ["edit"], "./images/pencil.svg");
+    let remove = createElemWithClasses("img", ["delete"], "./images/bin.svg");
+
+    remove.addEventListener("click", () => {
+        tasksGrid.removeChild(taskDiv);
+        delete today[title];
+    });
     tasksGrid.appendChild(taskDiv);
     taskDiv.append(
         taskCheckboxDiv,
@@ -110,7 +135,6 @@ submitTaskBtn.addEventListener("click", (e) => {
             priorityValue = prioBtn[i].value;
         }
     }
-    console.log(priorityValue);
     let newTask = new Task(
         taskTitle.value,
         taskDescription.value,
@@ -119,7 +143,6 @@ submitTaskBtn.addEventListener("click", (e) => {
     );
     addTaskToProject(today, newTask);
     createTaskDiv(taskTitle.value, taskDate.value, priorityValue);
-    console.log(today);
     form.reset();
     resetOverlay();
 });
