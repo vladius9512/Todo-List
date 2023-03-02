@@ -1,19 +1,23 @@
-function Task(title, description, date, priority) {
+function Task(title, description, date, priority, finished) {
     this.title = title;
     this.description = description;
     this.date = date;
     this.priority = priority;
+    this.finished = finished || false;
+    //this.projectName = projectName;
 }
 
-function Project(title) {
-    this.title = title;
-}
+const projects = {
+    today: {},
+    thisWeek: {},
+};
 
-let today = {};
-let thisWeek = {};
-
-function addTaskToProject(projectName, taskTitle) {
-    projectName[taskTitle.title] = taskTitle;
+function addTaskToProject(projectName, task) {
+    if (!projects[projectName]) {
+        projects[projectName] = {};
+    }
+    projects[projectName][task.title] = task;
+    console.log(projects);
 }
 
 const addProjBtn = document.getElementById("addProjBtn");
@@ -61,7 +65,6 @@ function createElemWithClasses(elemType, classesName, src, id) {
     if (id) {
         output.id = id;
     }
-    console.log(classesName.length);
     if (classesName) {
         classesName.forEach((className) => {
             output.classList.add(className);
@@ -70,12 +73,16 @@ function createElemWithClasses(elemType, classesName, src, id) {
     return output;
 }
 
-function createTaskDiv(title, date, priority) {
+function createTaskDiv(title, date, priority, finished) {
     let taskDiv = createElemWithClasses("div", ["task", priority]);
     let taskCheckboxDiv = createElemWithClasses("div", ["task_checkbox"]);
     let checkbox = createElemWithClasses("input", [title]);
     checkbox.type = "checkbox";
     checkbox.name = title;
+    checkbox.checked = finished;
+    if (finished) {
+        taskDiv.classList.add("checked");
+    }
 
     checkbox.addEventListener("change", () => {
         if (checkbox.checked) {
@@ -141,7 +148,7 @@ submitTaskBtn.addEventListener("click", (e) => {
         taskDate.value,
         priorityValue
     );
-    addTaskToProject(today, newTask);
+    addTaskToProject("today", newTask);
     createTaskDiv(taskTitle.value, taskDate.value, priorityValue);
     form.reset();
     resetOverlay();
@@ -158,9 +165,18 @@ submitProjBtn.addEventListener("click", (e) => {
         projTitle.setCustomValidity("Please fill out the project name field");
         return;
     }
-    const newProj = new Project(projTitle.value);
-    console.log(newProj);
+    projects[projTitle.value] = {};
     createProject(projTitle.value);
     projForm.reset();
     resetOverlay();
 });
+
+let task1 = new Task("work", "everyday", "2023-02-02", "high");
+addTaskToProject("today", task1);
+createTaskDiv("work", "2023-02-02", "high");
+let task2 = new Task("read", "everyday", "2023-03-03", "medium", true);
+addTaskToProject("today", task2);
+createTaskDiv(task2.title, task2.date, task2.priority, task2.finished);
+
+localStorage.setItem("myItems", JSON.stringify(projects));
+console.log(JSON.parse(localStorage.getItem("myItems")));
