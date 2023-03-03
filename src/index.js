@@ -1,10 +1,10 @@
-function Task(title, description, date, priority, finished) {
+function Task(title, description, date, priority, projectName, finished) {
     this.title = title;
     this.description = description;
     this.date = date;
     this.priority = priority;
     this.finished = finished || false;
-    //this.projectName = projectName;
+    this.projectName = projectName;
 }
 
 const projects = {
@@ -19,6 +19,9 @@ function addTaskToProject(projectName, task) {
     projects[projectName][task.title] = task;
     console.log(projects);
 }
+
+const todayBtn = document.getElementById("today");
+const thisWeekBtn = document.getElementById("thisWeek");
 
 const addProjBtn = document.getElementById("addProjBtn");
 const projectModal = document.getElementById("projectModal");
@@ -38,6 +41,14 @@ const taskDescription = document.getElementById("description");
 const taskDate = document.getElementById("date");
 const tasksGrid = document.getElementById("tasksGrid");
 const prioBtn = document.getElementsByName("priority");
+
+todayBtn.addEventListener("click", () => {
+    if (tasksGrid.classList.contains("today")) {
+        return;
+    }
+    tasksGrid.innerHTML = "";
+    tasksGrid.className = "today";
+});
 
 function resetOverlay() {
     addTaskForm.classList.remove("active");
@@ -127,6 +138,14 @@ function createTaskDiv(title, date, priority, finished) {
 function createProject(title) {
     let p = document.createElement("p");
     p.innerText = title;
+    p.className = "projectsNames";
+    p.addEventListener("click", () => {
+        if (tasksGrid.classList.contains(title)) {
+            return;
+        }
+        tasksGrid.innerHTML = "";
+        tasksGrid.className = title;
+    });
     projContainer.append(p);
 }
 
@@ -146,7 +165,8 @@ submitTaskBtn.addEventListener("click", (e) => {
         taskTitle.value,
         taskDescription.value,
         taskDate.value,
-        priorityValue
+        priorityValue,
+        "today"
     );
     addTaskToProject("today", newTask);
     createTaskDiv(taskTitle.value, taskDate.value, priorityValue);
@@ -163,18 +183,27 @@ submitProjBtn.addEventListener("click", (e) => {
     e.preventDefault();
     if (projTitle.value === "") {
         projTitle.setCustomValidity("Please fill out the project name field");
+        projTitle.reportValidity();
+        return;
+    }
+    if (projects[projTitle.value]) {
+        projTitle.setCustomValidity(
+            "There is already a project with this name. Please use another name for your project"
+        );
+        projTitle.reportValidity();
         return;
     }
     projects[projTitle.value] = {};
     createProject(projTitle.value);
     projForm.reset();
     resetOverlay();
+    console.log(projects);
 });
 
-let task1 = new Task("work", "everyday", "2023-02-02", "high");
+let task1 = new Task("work", "everyday", "2023-02-02", "high", "today");
 addTaskToProject("today", task1);
 createTaskDiv("work", "2023-02-02", "high");
-let task2 = new Task("read", "everyday", "2023-03-03", "medium", true);
+let task2 = new Task("read", "everyday", "2023-03-03", "medium", "today", true);
 addTaskToProject("today", task2);
 createTaskDiv(task2.title, task2.date, task2.priority, task2.finished);
 
