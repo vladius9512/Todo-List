@@ -17,7 +17,6 @@ function addTaskToProject(projectName, task) {
         projects[projectName] = {};
     }
     projects[projectName][task.title] = task;
-    console.log(projects);
 }
 
 const todayBtn = document.getElementById("today");
@@ -48,6 +47,16 @@ todayBtn.addEventListener("click", () => {
     }
     tasksGrid.innerHTML = "";
     tasksGrid.className = "today";
+    generateTaskFromProject("today");
+});
+
+thisWeekBtn.addEventListener("click", () => {
+    if (tasksGrid.classList.contains("thisWeek")) {
+        return;
+    }
+    tasksGrid.innerHTML = "";
+    tasksGrid.className = "thisWeek";
+    generateTaskFromProject("thisWeek");
 });
 
 function resetOverlay() {
@@ -98,8 +107,10 @@ function createTaskDiv(title, date, priority, finished) {
     checkbox.addEventListener("change", () => {
         if (checkbox.checked) {
             taskDiv.classList.add("checked");
+            projects[tasksGrid.className][checkbox.name].finished = true;
         } else {
             taskDiv.classList.remove("checked");
+            projects[tasksGrid.className][checkbox.name].finished = false;
         }
     });
 
@@ -120,7 +131,7 @@ function createTaskDiv(title, date, priority, finished) {
 
     remove.addEventListener("click", () => {
         tasksGrid.removeChild(taskDiv);
-        delete today[title];
+        delete projects[tasksGrid.className][title];
     });
     tasksGrid.appendChild(taskDiv);
     taskDiv.append(
@@ -145,6 +156,7 @@ function createProject(title) {
         }
         tasksGrid.innerHTML = "";
         tasksGrid.className = title;
+        generateTaskFromProject(title);
     });
     projContainer.append(p);
 }
@@ -166,9 +178,9 @@ submitTaskBtn.addEventListener("click", (e) => {
         taskDescription.value,
         taskDate.value,
         priorityValue,
-        "today"
+        tasksGrid.className
     );
-    addTaskToProject("today", newTask);
+    addTaskToProject(tasksGrid.className, newTask);
     createTaskDiv(taskTitle.value, taskDate.value, priorityValue);
     form.reset();
     resetOverlay();
@@ -208,4 +220,11 @@ addTaskToProject("today", task2);
 createTaskDiv(task2.title, task2.date, task2.priority, task2.finished);
 
 localStorage.setItem("myItems", JSON.stringify(projects));
-console.log(JSON.parse(localStorage.getItem("myItems")));
+//console.log(JSON.parse(localStorage.getItem("myItems")));
+
+function generateTaskFromProject(projectName) {
+    const ar = Object.values(projects[projectName]);
+    for (let i = 0; i < ar.length; i++) {
+        createTaskDiv(ar[i].title, ar[i].date, ar[i].priority, ar[i].finished);
+    }
+}
