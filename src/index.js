@@ -93,7 +93,21 @@ function createElemWithClasses(elemType, classesName, src, id) {
     return output;
 }
 
-function createTaskDiv(title, date, priority, finished) {
+function createDescriptionBlock(title, description, date, projectName) {
+    const descDiv = createElemWithClasses("div", ["descriptionBlock"]);
+    const taskTitle = createElemWithClasses("p");
+    taskTitle.innerText = `Task title: ${title}`;
+    const descriptionP = createElemWithClasses("p");
+    descriptionP.innerText = `Task description: ${description}`;
+    const dateP = createElemWithClasses("p");
+    dateP.innerText = `Task date: ${date}`;
+    const projectNameP = createElemWithClasses("p");
+    projectNameP.innerText = `Task is in project: ${projectName}`;
+    descDiv.append(taskTitle, descriptionP, dateP, projectNameP);
+    return descDiv;
+}
+
+function createTaskDiv(title, date, priority, finished, description) {
     let taskDiv = createElemWithClasses("div", ["task", priority]);
     let taskCheckboxDiv = createElemWithClasses("div", ["task_checkbox"]);
     let checkbox = createElemWithClasses("input", [title]);
@@ -119,10 +133,20 @@ function createTaskDiv(title, date, priority, finished) {
     let descriptionDiv = createElemWithClasses("div", ["description"]);
     let descriptionBtn = createElemWithClasses(
         "button",
-        [undefined],
+        undefined,
         undefined,
         "descBtn"
     );
+    descriptionBtn.addEventListener("click", () => {
+        const descriptionBlockDiv = createDescriptionBlock(
+            title,
+            description,
+            date,
+            tasksGrid.className
+        );
+        overlay.appendChild(descriptionBlockDiv);
+        overlay.classList.add("active");
+    });
     descriptionBtn.innerText = "Description";
     let dateDiv = createElemWithClasses("div", ["task_date"]);
     dateDiv.innerText = date;
@@ -181,7 +205,13 @@ submitTaskBtn.addEventListener("click", (e) => {
         tasksGrid.className
     );
     addTaskToProject(tasksGrid.className, newTask);
-    createTaskDiv(taskTitle.value, taskDate.value, priorityValue);
+    createTaskDiv(
+        taskTitle.value,
+        taskDate.value,
+        priorityValue,
+        false,
+        taskDescription.value
+    );
     form.reset();
     resetOverlay();
 });
@@ -214,10 +244,22 @@ submitProjBtn.addEventListener("click", (e) => {
 
 let task1 = new Task("work", "everyday", "2023-02-02", "high", "today");
 addTaskToProject("today", task1);
-createTaskDiv("work", "2023-02-02", "high");
+createTaskDiv(
+    task1.title,
+    task1.date,
+    task1.priority,
+    task1.finished,
+    task1.description
+);
 let task2 = new Task("read", "everyday", "2023-03-03", "medium", "today", true);
 addTaskToProject("today", task2);
-createTaskDiv(task2.title, task2.date, task2.priority, task2.finished);
+createTaskDiv(
+    task2.title,
+    task2.date,
+    task2.priority,
+    task2.finished,
+    task2.description
+);
 
 localStorage.setItem("myItems", JSON.stringify(projects));
 //console.log(JSON.parse(localStorage.getItem("myItems")));
