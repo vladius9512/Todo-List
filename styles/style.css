@@ -335,6 +335,10 @@ body {
     margin-left: -100px;
 }
 
+.submit-container button.active {
+    display: inline-block;
+}
+
 .submit-container button {
     width: 200px;
     height: 30px;
@@ -345,6 +349,7 @@ body {
     font-size: 16px;
     transition: all 0.25s ease-in-out;
     cursor: pointer;
+    display: none;
 }
 
 .submit-container button:hover {
