@@ -31,6 +31,7 @@ const projContainer = document.getElementById("projContainer");
 
 const addTaskBtn = document.getElementById("addTaskBtn");
 
+const descriptionOverlay = document.getElementById("descriptionBlock");
 const overlay = document.getElementById("overlay");
 const addTaskForm = document.getElementById("addTaskForm");
 const submitTaskBtn = document.getElementById("submitTask");
@@ -63,6 +64,7 @@ function resetOverlay() {
     addTaskForm.classList.remove("active");
     overlay.classList.remove("active");
     projectModal.classList.remove("active");
+    descriptionOverlay.classList.remove("active");
 }
 
 addTaskBtn.addEventListener("click", () => {
@@ -73,6 +75,13 @@ addTaskBtn.addEventListener("click", () => {
 overlay.addEventListener("click", (e) => {
     const target = e.target;
     if (target === overlay) {
+        resetOverlay();
+    }
+});
+
+descriptionOverlay.addEventListener("click", (e) => {
+    const target = e.target;
+    if (target === descriptionOverlay) {
         resetOverlay();
     }
 });
@@ -138,14 +147,15 @@ function createTaskDiv(title, date, priority, finished, description) {
         "descBtn"
     );
     descriptionBtn.addEventListener("click", () => {
+        descriptionOverlay.innerHTML = "";
         const descriptionBlockDiv = createDescriptionBlock(
             title,
             description,
             date,
             tasksGrid.className
         );
-        overlay.appendChild(descriptionBlockDiv);
-        overlay.classList.add("active");
+        descriptionOverlay.appendChild(descriptionBlockDiv);
+        descriptionOverlay.classList.add("active");
     });
     descriptionBtn.innerText = "Description";
     let dateDiv = createElemWithClasses("div", ["task_date"]);
