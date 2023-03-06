@@ -1,4 +1,5 @@
 function Task(title, description, date, priority, projectName, finished) {
+    this.id = new Date().getTime();
     this.title = title;
     this.description = description;
     this.date = date;
@@ -16,9 +17,10 @@ function addTaskToProject(projectName, task) {
     if (!projects[projectName]) {
         projects[projectName] = {};
     }
-    projects[projectName][task.title] = task;
+    projects[projectName][task.id] = task;
 }
 
+let taskBeingEditedId;
 const todayBtn = document.getElementById("today");
 const thisWeekBtn = document.getElementById("thisWeek");
 
@@ -35,6 +37,7 @@ const descriptionOverlay = document.getElementById("descriptionBlock");
 const overlay = document.getElementById("overlay");
 const addTaskForm = document.getElementById("addTaskForm");
 const submitTaskBtn = document.getElementById("submitTask");
+const editSubmitTaskBtn = document.getElementById("editTask");
 const form = document.getElementById("form");
 const taskTitle = document.getElementById("title");
 const taskDescription = document.getElementById("description");
@@ -65,17 +68,22 @@ function resetOverlay() {
     overlay.classList.remove("active");
     projectModal.classList.remove("active");
     descriptionOverlay.classList.remove("active");
+    submitTaskBtn.classList.remove("active");
+    editSubmitTaskBtn.classList.remove("active");
+    taskBeingEditedId = undefined;
 }
 
 addTaskBtn.addEventListener("click", () => {
     overlay.classList.add("active");
     addTaskForm.classList.add("active");
+    submitTaskBtn.classList.add("active");
 });
 
 overlay.addEventListener("click", (e) => {
     const target = e.target;
     if (target === overlay) {
         resetOverlay();
+        form.reset();
     }
 });
 
@@ -116,7 +124,7 @@ function createDescriptionBlock(title, description, date, projectName) {
     return descDiv;
 }
 
-function createTaskDiv(title, date, priority, finished, description) {
+function createTaskDiv(id, title, date, priority, finished, description) {
     let taskDiv = createElemWithClasses("div", ["task", priority]);
     let taskCheckboxDiv = createElemWithClasses("div", ["task_checkbox"]);
     let checkbox = createElemWithClasses("input", [title]);
@@ -161,11 +169,24 @@ function createTaskDiv(title, date, priority, finished, description) {
     let dateDiv = createElemWithClasses("div", ["task_date"]);
     dateDiv.innerText = date;
     let edit = createElemWithClasses("img", ["edit"], "./images/pencil.svg");
+
+    edit.addEventListener("click", () => {
+        overlay.classList.add("active");
+        addTaskForm.classList.add("active");
+        taskTitle.value = title;
+        taskDescription.value = description;
+        taskDate.value = date;
+        const thisPriorityBtn = document.getElementById(priority);
+        thisPriorityBtn.checked = true;
+        taskBeingEditedId = id;
+        editSubmitTaskBtn.classList.add("active");
+    });
+
     let remove = createElemWithClasses("img", ["delete"], "./images/bin.svg");
 
     remove.addEventListener("click", () => {
         tasksGrid.removeChild(taskDiv);
-        delete projects[tasksGrid.className][title];
+        delete projects[tasksGrid.className][id];
     });
     tasksGrid.appendChild(taskDiv);
     taskDiv.append(
@@ -216,6 +237,7 @@ submitTaskBtn.addEventListener("click", (e) => {
     );
     addTaskToProject(tasksGrid.className, newTask);
     createTaskDiv(
+        newTask.id,
         taskTitle.value,
         taskDate.value,
         priorityValue,
@@ -249,26 +271,42 @@ submitProjBtn.addEventListener("click", (e) => {
     createProject(projTitle.value);
     projForm.reset();
     resetOverlay();
-    console.log(projects);
+});
+
+editSubmitTaskBtn.addEventListener("click", (e) => {
+    e.preventDefault();
+    if (taskTitle.value === "") {
+        taskTitle.setCustomValidity("Please fill out the task name field");
+        return;
+    }
+    let priorityValue;
+    for (let i = 0; i < prioBtn.length; i++) {
+        if (prioBtn[i].checked) {
+            priorityValue = prioBtn[i].value;
+        }
+    }
+    projects[tasksGrid.className][taskBeingEditedId] = {
+        title: taskTitle.value,
+        description: taskDescription.value,
+        date: taskDate.value,
+        priority: priorityValue,
+        projectName: tasksGrid.className,
+    };
+    tasksGrid.innerHTML = "";
+    generateTaskFromProject(tasksGrid.className);
+    form.reset();
+    resetOverlay();
 });
 
 let task1 = new Task("work", "everyday", "2023-02-02", "high", "today");
 addTaskToProject("today", task1);
 createTaskDiv(
+    task1.id,
     task1.title,
     task1.date,
     task1.priority,
     task1.finished,
     task1.description
-);
-let task2 = new Task("read", "everyday", "2023-03-03", "medium", "today", true);
-addTaskToProject("today", task2);
-createTaskDiv(
-    task2.title,
-    task2.date,
-    task2.priority,
-    task2.finished,
-    task2.description
 );
 
 localStorage.setItem("myItems", JSON.stringify(projects));
@@ -277,6 +315,12 @@ localStorage.setItem("myItems", JSON.stringify(projects));
 function generateTaskFromProject(projectName) {
     const ar = Object.values(projects[projectName]);
     for (let i = 0; i < ar.length; i++) {
-        createTaskDiv(ar[i].title, ar[i].date, ar[i].priority, ar[i].finished);
+        createTaskDiv(
+            ar[i].id,
+            ar[i].title,
+            ar[i].date,
+            ar[i].priority,
+            ar[i].finished
+        );
     }
 }
