@@ -8,10 +8,11 @@ function Task(title, description, date, priority, projectName, finished) {
     this.projectName = projectName;
 }
 
-const projects = {
-    today: {},
-    thisWeek: {},
-};
+const localData = JSON.parse(localStorage.getItem("myItems"));
+
+const projects = localData;
+
+console.log(projects);
 
 function addTaskToProject(projectName, task) {
     if (!projects[projectName]) {
@@ -44,6 +45,22 @@ const taskDescription = document.getElementById("description");
 const taskDate = document.getElementById("date");
 const tasksGrid = document.getElementById("tasksGrid");
 const prioBtn = document.getElementsByName("priority");
+
+function createElemWithClasses(elemType, classesName, src, id) {
+    let output = document.createElement(elemType);
+    if (src) {
+        output.src = src;
+    }
+    if (id) {
+        output.id = id;
+    }
+    if (classesName) {
+        classesName.forEach((className) => {
+            output.classList.add(className);
+        });
+    }
+    return output;
+}
 
 todayBtn.addEventListener("click", () => {
     if (tasksGrid.classList.contains("today")) {
@@ -94,22 +111,6 @@ descriptionOverlay.addEventListener("click", (e) => {
     }
 });
 
-function createElemWithClasses(elemType, classesName, src, id) {
-    let output = document.createElement(elemType);
-    if (src) {
-        output.src = src;
-    }
-    if (id) {
-        output.id = id;
-    }
-    if (classesName) {
-        classesName.forEach((className) => {
-            output.classList.add(className);
-        });
-    }
-    return output;
-}
-
 function createDescriptionBlock(title, description, date, projectName) {
     const descDiv = createElemWithClasses("div", ["descriptionBlock"]);
     const taskTitle = createElemWithClasses("p");
@@ -138,10 +139,10 @@ function createTaskDiv(id, title, date, priority, finished, description) {
     checkbox.addEventListener("change", () => {
         if (checkbox.checked) {
             taskDiv.classList.add("checked");
-            projects[tasksGrid.className][checkbox.name].finished = true;
+            projects[tasksGrid.className][id].finished = true;
         } else {
             taskDiv.classList.remove("checked");
-            projects[tasksGrid.className][checkbox.name].finished = false;
+            projects[tasksGrid.className][id].finished = false;
         }
     });
 
@@ -178,8 +179,10 @@ function createTaskDiv(id, title, date, priority, finished, description) {
         taskDate.value = date;
         const thisPriorityBtn = document.getElementById(priority);
         thisPriorityBtn.checked = true;
+        console.log(id);
         taskBeingEditedId = id;
         editSubmitTaskBtn.classList.add("active");
+        console.log(projects);
     });
 
     let remove = createElemWithClasses("img", ["delete"], "./images/bin.svg");
@@ -246,6 +249,7 @@ submitTaskBtn.addEventListener("click", (e) => {
     );
     form.reset();
     resetOverlay();
+    localStorage.setItem("myItems", JSON.stringify(projects));
 });
 
 addProjBtn.addEventListener("click", () => {
@@ -271,6 +275,7 @@ submitProjBtn.addEventListener("click", (e) => {
     createProject(projTitle.value);
     projForm.reset();
     resetOverlay();
+    localStorage.setItem("myItems", JSON.stringify(projects));
 });
 
 editSubmitTaskBtn.addEventListener("click", (e) => {
@@ -286,6 +291,7 @@ editSubmitTaskBtn.addEventListener("click", (e) => {
         }
     }
     projects[tasksGrid.className][taskBeingEditedId] = {
+        ...projects[tasksGrid.className][taskBeingEditedId],
         title: taskTitle.value,
         description: taskDescription.value,
         date: taskDate.value,
@@ -296,21 +302,8 @@ editSubmitTaskBtn.addEventListener("click", (e) => {
     generateTaskFromProject(tasksGrid.className);
     form.reset();
     resetOverlay();
+    localStorage.setItem("myItems", JSON.stringify(projects));
 });
-
-let task1 = new Task("work", "everyday", "2023-02-02", "high", "today");
-addTaskToProject("today", task1);
-createTaskDiv(
-    task1.id,
-    task1.title,
-    task1.date,
-    task1.priority,
-    task1.finished,
-    task1.description
-);
-
-localStorage.setItem("myItems", JSON.stringify(projects));
-//console.log(JSON.parse(localStorage.getItem("myItems")));
 
 function generateTaskFromProject(projectName) {
     const ar = Object.values(projects[projectName]);
@@ -324,3 +317,16 @@ function generateTaskFromProject(projectName) {
         );
     }
 }
+
+function generateProjects() {
+    const projectKeys = Object.keys(projects);
+    projectKeys.forEach((projectKey) => {
+        if (projectKey !== "today" && projectKey !== "thisWeek") {
+            createProject(projectKey);
+        }
+    });
+}
+
+generateProjects();
+
+generateTaskFromProject("today");
